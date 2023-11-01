@@ -4,9 +4,10 @@ import json
 from collections import Counter
 from collections import defaultdict
 
-def clean_text(text):
+def clean_text(text, lowercase = True):
     # Convert text to lowercase
-    text = text.lower()
+    if lowercase == True:
+        text = text.lower()
     # Remove punctuation
     text = re.sub(r'[^\w\s]', '', text)
     # Replace multiple consecutive whitespaces with a single space

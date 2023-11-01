@@ -8,6 +8,7 @@ import find_categories
 import find_nominees
 import find_presenters
 import find_winners
+import find_pwn
 
 
 def main(query, categories=None):
@@ -32,6 +33,7 @@ def main(query, categories=None):
     find_hosts.add_host_tweets(text, retweet, answers_file)
 
     answers = {"award_data": {}}
+    # answers = {}
 
     c = find_categories.find_categories(text, retweet)
 
@@ -41,7 +43,10 @@ def main(query, categories=None):
     c = categories
 
     for c in categories:
-        n = find_nominees.nominees(c, text, retweet)
+        # print(c)
+        # print(c.split()[1])
+        
+        # n = find_nominees.nominees(c, text, retweet)
         # all_nominees.append(n)
 
         # p = find_presenters.presenters(c, text, retweet)
@@ -52,7 +57,10 @@ def main(query, categories=None):
         # w = find_winners.winners(c, text, retweet)
 
         # a = {"nominees": n, "presenters": p, "winner": w}
-        answers["award_data"][c] = c
+
+        p,w,n = find_pwn.find_pwn(c, text, retweet)
+        answers["award_data"][c] = {"nominees": n, "presenters": p, "winner": w[0] if w else []}
+        
 
     with open(answers_file, 'r') as f:
         data = json.load(f)
