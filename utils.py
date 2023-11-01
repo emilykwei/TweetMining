@@ -15,7 +15,7 @@ def clean_text(text, lowercase = True):
     return text
 
 def merge(dict):
-    nlp = spacy.load("en_core_web_md")
+    nlp = spacy.load("en_core_web_lg")
 
     threshold = 0.80
     sorted_items = sorted(dict.items(), key=lambda x: x[1], reverse=True)

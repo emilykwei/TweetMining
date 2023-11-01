@@ -7,11 +7,6 @@ Before you run the code, you should install the packages necessary by going to t
 
 `pip install -r requirements.txt`
 
-You should also run:
-`python -m spacy download en_core_web_sm`
-`python -m spacy download en_core_web_md`
-`python -m spacy download en_core_web_lg`
-
 Then you should run
 
 `python main.py "{filename}.json"`
@@ -25,3 +20,5 @@ Note that the filen must be in json format and must be in the same directory. Th
 The answer will be in `{filename}answers.json`.
 
 The categories found by the program will be in `categories.json`.
+
+The informatin regarding the red carpet will be in `redcarpet.json`.

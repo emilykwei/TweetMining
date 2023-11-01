@@ -6,15 +6,6 @@ import utils
 # Initialize a dictionary to store the counts of each pattern
 pattern_counts = defaultdict(int)
 
-# def clean_text(text):
-#     # Convert text to lowercase
-#     text = text.lower()
-#     # Remove punctuation
-#     text = re.sub(r'[^\w\s]', '', text)
-#     # Replace multiple consecutive whitespaces with a single space
-#     text = re.sub(r'\s+', ' ', text).strip()
-#     return text
-
 def find_and_count_patterns(text):
     text = utils.clean_text(text)
     
