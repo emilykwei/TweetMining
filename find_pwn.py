@@ -15,24 +15,9 @@ def find_pwn(category, text, retweet):
     spacy_model = spacy.load("en_core_web_md")
     # Loop through each category
 
-    p = [
-        "introduce", "present", "announce", "unveil", "hand out", "give",
-        "award", "host", "on stage", "welcome", "kick off", "opens with",
-        "reveal", "showcase", "honor", "celebrate", "nab"
-    ]
+    p = ["introduce", "present", "announce", "give"]
 
-    # w = [
-    #     "win", "takes home", "brings home", "reels in", "award", "honor",
-    #     "victorious", "triumph", "congrat", "accept", "receive", "clinch",
-    #     "nab", "scoop", "secure", "earn", "dedicate", "celebrate", "got", "won", "goes to"
-    # ]
-
-    n = [
-        "nomin", "chosen", "up for", "select", "shortlist", "in the running",
-        "contender", "candidate", "acknowledge", "recognize", "on the list",
-        "potential winner", "made the cut", "finalist", "belong", "wish", "luck",
-        "beat", "deserve", "should", "would", "angry", "sorry", "poor", "didn", "not"
-    ]
+    n = ["nomin", "chosen", "up for", "select", "shortlist", "in the running"]
 
     stop_words = ['i', 'you', 'he', 'she', 'this', 'that', 'they', 'somebody', 'goldenglobes', 'golden', 'globes',
                   'everyone', 'it', 'me', 'guys', 'any', 'all', 'what', 'award', 'anything', 'mom', 'nominee',
