@@ -33,29 +33,21 @@ def find_redcarpet(redcarpet):
                 if sentiment_polarity > 0.5 or sentiment_polarity < -0.5:
                     controversial[token.text] += 1
 
-                elif sentiment_polarity > 0:
+                elif sentiment_polarity > 0.2:
                     best_dressed[token.text] += 1
 
-                elif sentiment_polarity < 0:
+                elif sentiment_polarity < 0.15:
                     worst_dressed[token.text] += 1
 
-    best_dressed = merge(best_dressed)
-    worst_dressed = merge(worst_dressed)
-    discussed = merge(discussed)
-    controversial = merge(controversial)
+    best_dressed = merge(best_dressed).most_common(1)
+    worst_dressed = merge(worst_dressed).most_common(1)
+    discussed = merge(discussed).most_common(1)
+    controversial = merge(controversial).most_common(1)
 
-    print(best_dressed)
-    print()
-    print(worst_dressed)
-    print()
-    print(discussed)
-    print()
-    print(controversial)
-
-    answer["best dressed"] = best_dressed[0]
-    answer["worst dressed"] = worst_dressed[0]
-    answer["most discussed"] = discussed[0]
-    answer["most controversial"] = controversial[0]
+    answer["best dressed"] = [key for key, _ in best_dressed][0] if best_dressed else "N/A"
+    answer["worst dressed"] = [key for key, _ in worst_dressed][0] if worst_dressed else "N/A"
+    answer["most discussed"] = [key for key, _ in discussed][0] if discussed else "N/A"
+    answer["most controversial"] = [key for key, _ in controversial][0] if controversial else "N/A"
 
     with open("redcarpet.json", 'w') as f:
         # Dump the dictionary to the file
