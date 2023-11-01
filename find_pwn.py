@@ -39,7 +39,7 @@ def find_pwn(category, text, retweet):
                   'people', 'tv', 'talk', 'musical', 'we', 'foreign', 'word', 'fingers', 'idk', 'favorite', 'u', 'comedy', 
                   'night', 'none', 'congrats', 'game', 'changer', 'nominations', 'film', 'films', 'more', 'your', 'god', 'themselves', 
                   'movies', 'subtitles', 'trailers', 'director', 'movie', 'good', 'awards', 'same', 'category', 'comedy', 'mtv', 'fav', 
-                  'girls', 'boys', 'ladies', 'aaaaand', 'kid', 'angry', 'her', 'opinion', 'animated', 'attention', 'kids', 'musicals', 
+                  'girls', 'boys', 'ladies', '`and', 'kid', 'angry', 'her', 'opinion', 'animated', 'attention', 'kids', 'musicals', 
                   'life', 'my', 'rest', 'bad', 'anyone', 'comedies', 'expensive']
 
     presenters = defaultdict(int)

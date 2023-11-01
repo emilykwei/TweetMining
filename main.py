@@ -7,6 +7,7 @@ import find_hosts
 import find_categories
 import find_pwn
 import find_redcarpet
+import find_events
 
 def main(query, categories=None):
     query = query.strip()
