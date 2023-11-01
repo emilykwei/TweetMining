@@ -7,6 +7,7 @@ import find_hosts
 import find_categories
 import find_pwn
 import find_redcarpet
+import human_readable_output
 
 def main(query, categories=None):
     query = query.strip()
@@ -35,14 +36,15 @@ def main(query, categories=None):
     find_hosts.add_host_tweets(text, retweet, answers_file)
 
     answers = {"award_data": {}}
-
+    print("finding categories")
     c = find_categories.find_categories(text+retweet)
     # c += find_categories.find_categories(retweet)
-
+    print("finish finding categories")
     if categories is None:
         categories = c
 
     for c in categories:
+        print(c)
         p,w,n = find_pwn.find_pwn(c, text, retweet)
         answers["award_data"][c] = {"nominees": n, "presenters": p, "winner": w[0] if w else []}
 
@@ -55,6 +57,8 @@ def main(query, categories=None):
     with open(answers_file, 'w') as f:
         # Dump the dictionary to the file
         json.dump(data, f)
+    
+    human_readable_output.human_readable_output(data)
 
 
 if __name__ == "__main__":

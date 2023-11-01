@@ -95,12 +95,12 @@ def find_categories(retweet):
     nlp = spacy.load('en_core_web_md')
     matcher = Matcher(nlp.vocab)
 
-    stop_words = ['part','dress','golden','globe','thing','show','friend','host']
+    stop_words = ['part','dress','golden','globe','thing','show','friend','host','awards']
 
     patterns = [
         [{'LOWER': 'best'}, {'POS': 'NOUN'}, {'LOWER': 'by'}, {'POS': 'DET', 'OP': '?'}, {'POS': {'IN': ['ADJ', 'NOUN']}, 'OP': '+'}, {'POS': 'ADP', 'OP': '?'}, {'POS': 'DET', 'OP': '?'}, {'POS': 'NOUN', 'OP': '+'}],
-        [{'LOWER': 'best'}, {'POS': 'NOUN'}, {'LOWER': 'by'},{'POS': 'DET'}, {'POS': 'NOUN'}],
-        [{'LOWER': 'best'}, {'POS': 'NOUN'}, {'LOWER': 'in'}, {'POS': 'DET'}, {'POS': 'ADJ'}],
+        [{'LOWER': 'best'}, {'POS': 'NOUN'}, {'LOWER': 'by'}, {'POS': 'DET'}, {'POS': 'NOUN'}],
+        [{'LOWER': 'best'}, {'POS': 'NOUN'}, {'LOWER': 'in'}, {'POS': 'DET', 'OP': '?'}, {'POS': 'ADJ', 'OP': '+'}],
         [{'LOWER': 'best'}, {'POS': 'NOUN'}, {'LOWER': 'in'}, {'POS': 'DET'}, {'POS': 'NOUN'}],
         [{'LOWER': 'best'}, {'POS': 'NOUN'}, {'LOWER': 'in'}, {'POS': 'NOUN'}, {'POS': 'NOUN'}],
         [{'LOWER': 'best'}, {'POS': 'NOUN'}, {'LOWER': 'in'}, {'POS': 'NOUN'}],
@@ -110,14 +110,12 @@ def find_categories(retweet):
         [{'LOWER': 'best'}, {'POS': 'NOUN'}, {'POS': 'PRON'}, {'POS': 'PRON'}, {'LOWER': 'or'}, {'POS': 'ADJ'}],
         [{'LOWER': 'best'}, {'POS': {'IN': ['ADJ', 'NOUN', 'PROPN']}, 'OP': '+'}],
         [{'LOWER': 'cecil'}, {'LOWER': 'b.'}, {'LOWER': 'demille'}, {'LOWER': 'award'}],
-        # [{'LOWER': 'best'}, {'POS': 'ADJ', 'OP': '?'}, {'POS': 'NOUN', 'OP': '+'}],
         [{'LOWER': 'best'}, {'POS': 'NOUN'}, {'POS': 'NOUN', 'OP': '?'}, {'POS': 'CCONJ', 'OP': '?'}, {'POS': 'ADJ|NOUN', 'OP': '?'}],
         [{'LOWER': 'best'}, {'POS': 'NOUN'}, {'LOWER': 'by'}, {'POS': 'DET', 'OP': '?'}],
-        # [{'LOWER': 'best'}, {'POS': 'NOUN'}, {'LOWER': 'in'}, {'POS': 'NOUN'}, {'POS': 'NOUN'}],
         [{'LOWER': 'best'}, {'POS': 'NOUN'}, {'POS': 'NOUN'}],
         [{'LOWER': 'best'}, {'POS': 'ADJ'}, {'POS': 'NOUN'}],
-        [{'LOWER': 'best'}, {'POS': 'ADJ'}, {'POS': 'NOUN'}, {'LOWER': 'in'},{'POS': 'NOUN'}, {'POS': 'NOUN'}],
-        [{'LOWER': 'best'}, {'POS': 'ADJ'}, {'POS': 'NOUN'}, {'LOWER': 'in'},{'POS': 'DET'}, {'POS': 'NOUN'}, {'POS': 'NOUN'}]
+        [{'LOWER': 'best'}, {'POS': 'ADJ'}, {'POS': 'NOUN'}, {'LOWER': 'in'}, {'POS': 'NOUN', 'OP': '+'}, {'POS': 'NOUN', 'OP': '+'}],
+        [{'LOWER': 'best'}, {'POS': 'ADJ'}, {'POS': 'NOUN'}, {'LOWER': 'in'}, {'POS': 'DET', 'OP': '?'}, {'POS': 'NOUN', 'OP': '+'}, {'POS': 'NOUN', 'OP': '+'}]
     ]
     matcher.add('AWARD_CATEGORY', patterns)
 
