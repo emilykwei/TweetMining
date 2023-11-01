@@ -1,5 +1,17 @@
 import spacy
+import re
+import json
 from collections import Counter
+from collections import defaultdict
+
+def clean_text(text):
+    # Convert text to lowercase
+    text = text.lower()
+    # Remove punctuation
+    text = re.sub(r'[^\w\s]', '', text)
+    # Replace multiple consecutive whitespaces with a single space
+    text = re.sub(r'\s+', ' ', text).strip()
+    return text
 
 def merge(dict):
     nlp = spacy.load("en_core_web_md")

@@ -41,7 +41,7 @@ def main(query, categories=None):
     c = categories
 
     for c in categories:
-        # n = find_nominees.nominees(c, text, retweet)
+        n = find_nominees.nominees(c, text, retweet)
         # all_nominees.append(n)
 
         # p = find_presenters.presenters(c, text, retweet)

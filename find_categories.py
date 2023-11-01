@@ -1,22 +1,22 @@
 import re
 import json
 from collections import defaultdict
-from helpers import merge
+import utils
 
 # Initialize a dictionary to store the counts of each pattern
 pattern_counts = defaultdict(int)
 
-def clean_text(text):
-    # Convert text to lowercase
-    text = text.lower()
-    # Remove punctuation
-    text = re.sub(r'[^\w\s]', '', text)
-    # Replace multiple consecutive whitespaces with a single space
-    text = re.sub(r'\s+', ' ', text).strip()
-    return text
+# def clean_text(text):
+#     # Convert text to lowercase
+#     text = text.lower()
+#     # Remove punctuation
+#     text = re.sub(r'[^\w\s]', '', text)
+#     # Replace multiple consecutive whitespaces with a single space
+#     text = re.sub(r'\s+', ' ', text).strip()
+#     return text
 
 def find_and_count_patterns(text):
-    text = clean_text(text)
+    text = utils.clean_text(text)
     
     patterns = [
         r'\bbest\b.*?\b(picture|drama|musical|film)\b',
@@ -45,7 +45,7 @@ def find_categories(text, retweet):
     matches_dict = {}
     
     for t in text:
-        t = clean_text(t)
+        t = utils.clean_text(t)
     
         for pattern in patterns:
             for match in re.finditer(pattern, t):
@@ -54,7 +54,7 @@ def find_categories(text, retweet):
                 matches_dict[match_text] = pattern_counts[match_text]
 
     for rt in retweet:
-        rt = clean_text(rt)    
+        rt = utils.clean_text(rt)    
 
         for pattern in patterns:
             for match in re.finditer(pattern, rt):
@@ -62,7 +62,7 @@ def find_categories(text, retweet):
                 pattern_counts[match_text] += 2
                 matches_dict[match_text] = pattern_counts[match_text]
     
-    categories_counter = merge.merge(matches_dict)
+    categories_counter = utils.merge(matches_dict)
     
     x = 15
 

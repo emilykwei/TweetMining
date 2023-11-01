@@ -2,8 +2,7 @@ import re
 import json
 import spacy
 from collections import defaultdict 
-
-from helpers import merge
+import utils
 
 def find_host_tweets(strings):
     result = []
@@ -30,7 +29,7 @@ def add_host_tweets(text, retweet, file):
                 hosts[token.text] += 1
 
     # check result
-    hosts_counter = merge.merge(hosts)
+    hosts_counter = utils.merge(hosts)
     top_keys = [key for key, _ in hosts_counter.most_common(2)] # select top two candidate
 
     answer = {"hosts": top_keys}
