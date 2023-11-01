@@ -32,11 +32,13 @@ def main(query, categories=None):
     find_hosts.add_host_tweets(text, retweet, answers_file)
 
     answers = {"award_data": {}}
-    
-    if not categories:
-        categories = find_categories.find_categories(text, retweet)
 
-    all_nominees = []
+    c = find_categories.find_categories(text, retweet)
+
+    if not categories:
+        categories = c
+
+    c = categories
 
     for c in categories:
         # n = find_nominees.nominees(c, text, retweet)
