@@ -5,11 +5,8 @@ import json
 import clean_file
 import find_hosts
 import find_categories
-import find_nominees
-import find_presenters
-import find_winners
 import find_pwn
-
+import find_redcarpet
 
 def main(query, categories=None):
     query = query.strip()
@@ -28,40 +25,26 @@ def main(query, categories=None):
     with open("retweet.json", "r") as file:
         retweet = json.load(file)
 
+    with open("redcarpet.json", "r") as file:
+        redcarpet = json.load(file)
+
     clean_file.clean_file(query)
+
+    find_redcarpet.find_redcarpet(redcarpet)
 
     find_hosts.add_host_tweets(text, retweet, answers_file)
 
     answers = {"award_data": {}}
-    # answers = {}
 
     c = find_categories.find_categories(text+retweet)
     # c += find_categories.find_categories(retweet)
 
-    if not categories:
+    if categories is None:
         categories = c
 
-    c = categories
-
     for c in categories:
-        # print(c)
-        # print(c.split()[1])
-        
-        # n = find_nominees.nominees(c, text, retweet)
-        # all_nominees.append(n)
-
-        # p = find_presenters.presenters(c, text, retweet)
-
-        # # winner must be in nominees
-        # # string edit distance approach
-        # # co occurence
-        # w = find_winners.winners(c, text, retweet)
-
-        # a = {"nominees": n, "presenters": p, "winner": w}
-
         p,w,n = find_pwn.find_pwn(c, text, retweet)
         answers["award_data"][c] = {"nominees": n, "presenters": p, "winner": w[0] if w else []}
-        
 
     with open(answers_file, 'r') as f:
         data = json.load(f)
