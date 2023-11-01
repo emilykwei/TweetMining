@@ -36,7 +36,8 @@ def main(query, categories=None):
 
     answers = {"award_data": {}}
 
-    c = find_categories.find_categories(text, retweet)
+    c = find_categories.find_categories(text+retweet)
+    # c += find_categories.find_categories(retweet)
 
     if categories is None:
         categories = c
