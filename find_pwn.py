@@ -1,5 +1,6 @@
 import spacy
 import utils
+import re
 # from textblob import TextBlob
 from collections import defaultdict
 
@@ -20,11 +21,11 @@ def find_pwn(category, text, retweet):
         "reveal", "showcase", "honor", "celebrate", "nab"
     ]
 
-    w = [
-        "win", "takes home", "brings home", "reels in", "award", "honor",
-        "victorious", "triumph", "congrat", "accept", "receive", "clinch",
-        "nab", "scoop", "secure", "earn", "dedicate", "celebrate", "got", "won", "goes to"
-    ]
+    # w = [
+    #     "win", "takes home", "brings home", "reels in", "award", "honor",
+    #     "victorious", "triumph", "congrat", "accept", "receive", "clinch",
+    #     "nab", "scoop", "secure", "earn", "dedicate", "celebrate", "got", "won", "goes to"
+    # ]
 
     n = [
         "nomin", "chosen", "up for", "select", "shortlist", "in the running",
@@ -45,6 +46,37 @@ def find_pwn(category, text, retweet):
     presenters = defaultdict(int)
     winners = defaultdict(int)
     nominees = defaultdict(int)
+    category_doc = spacy_model(category)
+    def win_helper(s):
+        threshold = .7
+        s = s.replace("golden globes","").replace("goldenglobes","").lower()
+        match1 = re.search(r'(?i)([a-z\s]+)(?:wins|winning|won) (best [a-z\s]+)', s)
+        if match1:
+            if category_doc.similarity(spacy_model(match1.group(2))) > threshold:
+                if "actor" in category or "actress" in category or "director" in category:
+                    for ent in spacy_model(match1.group(1)).ents:
+                        winners[ent.text] += 1
+                else:
+                    doc2 = spacy_model(match1.group(1))
+                    for chunk in doc2.noun_chunks:
+                            win = chunk.text.lstrip() 
+                            if any(token.ent_type_ == "PERSON" for token in chunk):
+                                continue
+                            winners[win] += 1
+        else:
+            match1 = re.search(r'(?i)(best [a-z\s]+) goes to ([a-z\s]+)', s)
+            if match1:
+                if category_doc.similarity(spacy_model(match1.group(1))) > threshold:
+                    if "actor" in category or "actress" in category or "director" in category:
+                        for ent in spacy_model(match1.group(2)).ents:
+                            winners[ent.text] += 1
+                    else:
+                        doc2 = spacy_model(match1.group(2))
+                        for chunk in doc2.noun_chunks:
+                            win = chunk.text.lstrip()
+                            if any(token.ent_type_ == "PERSON" for token in chunk):
+                                continue
+                            winners[win] += 1
 
     if (category.split()[0] == "best"):
         keyword1 = category.split()[1]
@@ -62,10 +94,11 @@ def find_pwn(category, text, retweet):
         t = utils.clean_text(t, False)
         if keyword1 in t and (keyword2 in t or keyword3 in t):
             has_p = any(word in t for word in p)
-            has_w = any(word in t for word in w)
+            # has_w = any(word in t for word in w)
             has_n = any(word in t for word in n)
 
-            if not (has_p or has_w or has_n):
+            # if not (has_p or has_w or has_n):
+            if not (has_p or has_n):
                 continue
 
             doc = spacy_model(t)
@@ -86,10 +119,10 @@ def find_pwn(category, text, retweet):
                             if all(word.lower() not in stop_words for word in chunk.text.split()):
                                 nominees[chunk.text.lower()] += 1
 
-                    if has_w:
-                        if chunk.label_ == "PERSON" or award_not_for_human or chunk.text.istitle():
-                            if all(word.lower() not in stop_words for word in chunk.text.split()):
-                                winners[chunk.text.lower()] += 1
+                    # if has_w:
+                    #     if chunk.label_ == "PERSON" or award_not_for_human or chunk.text.istitle():
+                    #         if all(word.lower() not in stop_words for word in chunk.text.split()):
+                    #             winners[chunk.text.lower()] += 1
 
                 elif chunk.end_char >= start_idx:
                     if has_p:
@@ -102,10 +135,12 @@ def find_pwn(category, text, retweet):
                             if all(word.lower() not in stop_words for word in chunk.text.split()):
                                 nominees[chunk.text.lower()] += 1
 
-                    if has_w:
-                        if chunk.label_ == "PERSON" or award_not_for_human or chunk.text.istitle():
-                            if all(word.lower() not in stop_words for word in chunk.text.split()):
-                                winners[chunk.text.lower()] += 1
+                    # if has_w:
+                    #     if chunk.label_ == "PERSON" or award_not_for_human or chunk.text.istitle():
+                    #         if all(word.lower() not in stop_words for word in chunk.text.split()):
+                    #             winners[chunk.text.lower()] += 1
+            # helper for winner
+            win_helper(t)
 
     for t in retweet:
 
@@ -113,10 +148,11 @@ def find_pwn(category, text, retweet):
         t = utils.clean_text(t, False)
         if keyword1 in t and (keyword2 in t or keyword3 in t):
             has_p = any(word in t for word in p)
-            has_w = any(word in t for word in w)
+            # has_w = any(word in t for word in w)
             has_n = any(word in t for word in n)
 
-            if not (has_p or has_w or has_n):
+            # if not (has_p or has_w or has_n):
+            if not (has_p or has_n):
                 continue
 
             doc = spacy_model(t)
@@ -138,10 +174,10 @@ def find_pwn(category, text, retweet):
                             if all(word.lower() not in stop_words for word in chunk.text.split()):
                                 nominees[chunk.text.lower()] += 2
 
-                    if has_w:
-                        if chunk.label_ == "PERSON" or award_not_for_human or chunk.text.istitle():
-                            if all(word.lower() not in stop_words for word in chunk.text.split()):
-                                winners[chunk.text.lower()] += 2
+                    # if has_w:
+                    #     if chunk.label_ == "PERSON" or award_not_for_human or chunk.text.istitle():
+                    #         if all(word.lower() not in stop_words for word in chunk.text.split()):
+                    #             winners[chunk.text.lower()] += 2
 
                 elif chunk.end_char >= start_idx:
                     if has_p:
@@ -155,10 +191,12 @@ def find_pwn(category, text, retweet):
                             if all(word.lower() not in stop_words for word in chunk.text.split()):
                                 nominees[chunk.text.lower()] += 2
 
-                    if has_w:
-                        if chunk.label_ == "PERSON" or award_not_for_human or chunk.text.istitle():
-                            if all(word.lower() not in stop_words for word in chunk.text.split()):
-                                winners[chunk.text.lower()] += 2
+                    # if has_w:
+                    #     if chunk.label_ == "PERSON" or award_not_for_human or chunk.text.istitle():
+                    #         if all(word.lower() not in stop_words for word in chunk.text.split()):
+                    #             winners[chunk.text.lower()] += 2
+            # helper for winner
+            win_helper(t)
 
     pc = utils.merge(presenters)
     wc = utils.merge(winners)
