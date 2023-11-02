@@ -7,9 +7,13 @@ from ftfy import fix_text
 from unidecode import unidecode
 from langdetect import detect
 
-keywords = ["goes to", "award", "best", "receive", "honor", "grant", "present", "nomin", "host", "giv"]
+keywords = ["goes to", "award", "best", "receive",
+            "honor", "grant", "present", "nomin", "host", "giv"]
 
-red_carpet_terms = ["dress", "outfit", "red", "carpet", "fit"]
+red_carpet_terms = [
+    "dress", "outfit", "red", "carpet", "fit", "best", "stunning",
+    "suite", "style", "stylish", "fashion", "glam", "design"]
+
 
 def filter(tweet):
     pattern = "|".join(map(re.escape, keywords))
@@ -17,7 +21,8 @@ def filter(tweet):
     result = regex.search(tweet)
     if result:
         return tweet
-    
+
+
 def get_redcarpet(tweet):
     pattern = "|".join(map(re.escape, red_carpet_terms))
     regex = re.compile(pattern)
@@ -27,6 +32,8 @@ def get_redcarpet(tweet):
 
 # Removes URL and double spacing
 # If entire text is URL, then returns ""
+
+
 def remove_url(text):
     result = re.sub(
         r'\s*http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+\s*', ' ', text)
@@ -34,6 +41,8 @@ def remove_url(text):
     return result
 
 # Determines if a tweet is a retweet
+
+
 def is_retweet(tweet):
     # Case 1: Simple retweet
     simple_rt_pattern = re.compile(r'^RT @')
@@ -58,6 +67,8 @@ def is_retweet(tweet):
     return False
 
 # Returns the text portion of a retweet
+
+
 def parse_retweet(text):
     # Keep removing leading retweets until there are no more
     while re.match(r'^RT @[^\s:]+:', text):
@@ -69,10 +80,13 @@ def parse_retweet(text):
     return text.strip()
 
 # Remove hastag
+
+
 def remove_hashtag(text):
     result = re.sub(r'#\w+', '', text)
     result = re.sub(r'\s+', ' ', result).strip()
     return result
+
 
 def parse_hashtag_at(text):
     try:
@@ -91,11 +105,14 @@ def parse_hashtag_at(text):
         pass
 
 # Remove all non-English
+
+
 def is_english(text):
     try:
         return detect(text) == "en"
     except:
         return False
+
 
 def is_quote(text):
     try:
@@ -104,6 +121,7 @@ def is_quote(text):
         return bool(pattern.search(text))
     except:
         return False
+
 
 def parse_quote(text):
     pattern = re.compile(r'"([\w\W\s\S]+?)"')
@@ -114,8 +132,10 @@ def parse_quote(text):
     else:
         return text
 
+
 def is_quote_or_retweet(text):
     return is_quote(text) or is_retweet(text)
+
 
 def remove_punctuation(text):
     # Make a translator that maps each punctuation character to a space
@@ -124,6 +144,7 @@ def remove_punctuation(text):
 
     # Use this translator to replace all punctuation in the text with spaces
     return text.translate(translator)
+
 
 def clean_file(filename):
     file = open(filename)

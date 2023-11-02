@@ -36,7 +36,7 @@ def find_redcarpet(redcarpet):
                 elif sentiment_polarity > 0.2:
                     best_dressed[token.text] += 1
 
-                elif sentiment_polarity < 0.15:
+                elif sentiment_polarity < 0.2:
                     worst_dressed[token.text] += 1
 
     best_dressed = merge(best_dressed).most_common(1)

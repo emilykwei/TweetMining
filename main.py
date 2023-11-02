@@ -20,6 +20,8 @@ def main(query, categories=None):
     else:
         print("Error: The query must be a JSON file name ending with '.json'.")
         sys.exit(1)
+        
+    clean_file.clean_file(query)
 
     with open("text.json", "r") as file:
         text = json.load(file)
@@ -30,7 +32,6 @@ def main(query, categories=None):
     with open("redcarpet.json", "r") as file:
         redcarpet = json.load(file)
 
-    clean_file.clean_file(query)
 
     find_redcarpet.find_redcarpet(redcarpet)
 
