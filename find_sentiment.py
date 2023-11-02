@@ -25,6 +25,8 @@ def find_sentiment(winners, tweets, retweets):
                 
     
     for winner in winners:
+        if len(answers[winner]) == 0:
+            continue
         score = sum(answers[winner])/len(answers[winner])
         # print(score)
         if score > .3:
@@ -35,6 +37,8 @@ def find_sentiment(winners, tweets, retweets):
             scores[winner] = f"Neutral sentiment, {score}"
         # print(answers)
         # print(scores)
+    for x,y in scores.items():
+        print(f"Winner {x} has {y}")
     
     with open("sentiment.json", 'w') as f:
         json.dump(scores, f)
