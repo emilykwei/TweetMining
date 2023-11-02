@@ -15,14 +15,14 @@ def find_pwn(category, text, retweet):
     spacy_model = spacy.load("en_core_web_md")
     # Loop through each category
 
-    p = ["introduce", "present", "announce", "give"]
+    # p = ["introduce", "present", "announce", "give"]
     p = [
         "introduce", "present", "announce", "unveil", "hand out", "give",
         "award", "host", "on stage", "welcome", "kick off",
         "reveal", "honor", "celebrate", "nab"
     ]
 
-    n = ["nomin", "chosen", "up for", "select", "shortlist", "in the running"]
+    # n = ["nomin", "chosen", "up for", "select", "shortlist", "in the running"]
     w = [
         "win", "takes home", "brings home", "award", "honor",
         "victor", "triumph", "congrat", "accept", "receive", "clinch",
@@ -45,7 +45,7 @@ def find_pwn(category, text, retweet):
     #               'girls', 'boys', 'ladies', 'aaaaand', 'kid', 'angry', 'her', 'opinion', 'animated', 'attention', 'kids', 'musicals', 
     #               'life', 'my', 'rest', 'bad', 'anyone', 'comedies', 'expensive']
 
-    stop_words = ['i','you','he','she','this','that','they','the','somebody','goldenglobes','golden globes',
+    stop_words = ['i','you','he','she','this','that','they','the','somebody','goldenglobes','golden globes','golden globe','the golden globe',
                     'the golden globes', 'everyone', 'it', 'me','guys','any','all']
 
     presenters = defaultdict(int)
@@ -119,13 +119,13 @@ def find_pwn(category, text, retweet):
                     if has_p:
                         if chunk.label_ == "PERSON" or chunk.text.istitle():
                             # if all(word.lower() not in stop_words for word in chunk.text.split()):
-                            if chunk.text.lower() not in stop_words:
+                            if chunk.text.lower() not in stop_words and chunk.text.lower().split()[0] != "best":
                                 presenters[chunk.text.lower()] += 1
 
                     if has_n:
                         if chunk.label_ == "PERSON" or award_not_for_human or chunk.text.istitle():
                             # if all(word.lower() not in stop_words for word in chunk.text.split()):
-                            if chunk.text.lower() not in stop_words:
+                            if chunk.text.lower() not in stop_words and chunk.text.lower().split()[0] != "best":
                                 nominees[chunk.text.lower()] += 1
 
                     # if has_w:

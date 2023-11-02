@@ -1,3 +1,4 @@
+import json
 import spacy
 import utils
 from collections import defaultdict 
@@ -15,5 +16,5 @@ def human_readable_output(data):
 
     with open("redcarpet.json", 'r') as f:
         carpet = json.load(f)
-        for key, value in carpet:
+        for key, value in carpet.items():
             print(key,": ",value)
