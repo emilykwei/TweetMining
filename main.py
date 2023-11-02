@@ -8,6 +8,7 @@ import find_categories
 import find_pwn
 import find_redcarpet
 import human_readable_output
+import find_sentiment
 
 def main(query, categories=None):
     query = query.strip()
@@ -43,9 +44,11 @@ def main(query, categories=None):
     if categories is None:
         categories = c
 
+    winners_list = []
     for c in categories:
         print(c)
         p,w,n = find_pwn.find_pwn(c, text, retweet)
+        winners_list.append(w)
         answers["award_data"][c] = {"nominees": n, "presenters": p, "winner": w[0] if w else []}
 
     with open(answers_file, 'r') as f:
@@ -58,6 +61,7 @@ def main(query, categories=None):
         # Dump the dictionary to the file
         json.dump(data, f)
     
+    find_sentiment.find_sentiment(winners_list, text, retweet)
     human_readable_output.human_readable_output(data)
 
 
