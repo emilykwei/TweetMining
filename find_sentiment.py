@@ -3,27 +3,41 @@ import spacy
 from collections import defaultdict
 from textblob import TextBlob
 # from utils import merge
+spacy_model = spacy.load("en_core_web_sm")
 
 
 def find_sentiment(winners, tweets, retweets):
     answers = defaultdict(list) # map name of a winner to sentiment?
-    spacy_model = spacy.load("en_core_web_sm")
+    scores = defaultdict(str) # map name of a winner to sentiment?
     for winner in winners:
         for tweet in tweets:
             if winner in tweet:
-                blob = TextBlob(tweet)
+                blob = TextBlob(tweet.lower())
                 score = blob.sentiment.polarity
+                # print(tweet,score)
                 answers[winner].append(score)
                 
         for rt in retweets:
             if winner in rt:
-                blob = TextBlob(rt)
+                blob = TextBlob(rt.lower())
                 score = blob.sentiment.polarity
                 answers[winner].append(score)
                 
     
     for winner in winners:
-        pass
+        score = sum(answers[winner])/len(answers[winner])
+        # print(score)
+        if score > .3:
+            scores[winner] = f"Positive sentiment, {score}"
+        elif score < -.3:
+            scores[winner] = f"Negative sentiment, {score}"
+        else:
+            scores[winner] = f"Neutral sentiment, {score}"
+        # print(answers)
+        # print(scores)
+    
+    with open("sentiment.json", 'w') as f:
+        json.dump(scores, f)
 
 
 
@@ -32,4 +46,9 @@ def find_sentiment(winners, tweets, retweets):
     # with open("winner_sentiment.json", 'w') as f:
     #     # Dump the dictionary to the file
     #     json.dump(answer, f)
-find_sentiment(["Joaquin Phoenix"], ["Joaquin Phoenix is the best actor ever"], [])
+
+# with open("text.json", "r") as file:
+#     text = json.load(file)
+# with open("retweet.json", "r") as file:
+#     retweet = json.load(file)
+# find_sentiment(["ben affleck","daniel day-lewis","maggie smith","argo"], text, retweet)
