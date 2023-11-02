@@ -48,8 +48,9 @@ def main(query, categories=None):
     for c in categories:
         print(c)
         p,w,n = find_pwn.find_pwn(c, text, retweet)
-        winners_list.append(w)
         answers["award_data"][c] = {"nominees": n, "presenters": p, "winner": w[0] if w else []}
+        if w:
+            winners_list.append(w[0])
 
     with open(answers_file, 'r') as f:
         data = json.load(f)
@@ -61,8 +62,8 @@ def main(query, categories=None):
         # Dump the dictionary to the file
         json.dump(data, f)
     
-    find_sentiment.find_sentiment(winners_list, text, retweet)
     human_readable_output.human_readable_output(data)
+    find_sentiment.find_sentiment(winners_list, text, retweet)
 
 
 if __name__ == "__main__":
