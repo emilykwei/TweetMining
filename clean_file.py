@@ -11,8 +11,7 @@ keywords = ["goes to", "award", "best", "receive",
             "honor", "grant", "present", "nomin", "host", "giv"]
 
 red_carpet_terms = [
-    "dress", "outfit", "red", "carpet", "fit", "best", "stunning",
-    "suite", "style", "stylish", "fashion", "glam", "design"]
+    "dress", "outfit", "red", "carpet", "fit", "best", "style"]
 
 
 def filter(tweet):
